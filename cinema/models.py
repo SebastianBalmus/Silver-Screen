@@ -27,6 +27,9 @@ class Cinema(models.Model):
     address = models.CharField(max_length=70)
     hall = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name
+
 
 class CinemaHall(models.Model):
     name = models.CharField(max_length=30)
@@ -35,3 +38,16 @@ class CinemaHall(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Seat(models.Model):
+
+    OCCUPIED = 'O'
+    EMPTY = 'E'
+    STATUS_CHOICES = [
+        (OCCUPIED, 'Occupied'),
+        (EMPTY, 'Empty')
+    ]
+
+    reservation = models.CharField(max_length=10, choices=STATUS_CHOICES, default=EMPTY)
+
