@@ -20,6 +20,14 @@ class Movie(models.Model):
         return 'https://www.imdb.com/title/' + self.imdb_id.__str__()
 
 
+class Cinema(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=300)
+    city = models.CharField(max_length=30)
+    address = models.CharField(max_length=70)
+    hall = models.CharField(max_length=30)
+
+
 class CinemaHall(models.Model):
     name = models.CharField(max_length=30)
     seats = models.IntegerField()
