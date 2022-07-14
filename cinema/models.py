@@ -18,3 +18,12 @@ class Movie(models.Model):
     @cached_property
     def imdb_link(self):
         return 'https://www.imdb.com/title/' + self.imdb_id.__str__()
+
+
+class CinemaHall(models.Model):
+    name = models.CharField(max_length=30)
+    seats = models.IntegerField()
+    description = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.name
