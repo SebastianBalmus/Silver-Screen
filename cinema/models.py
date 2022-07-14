@@ -41,5 +41,13 @@ class CinemaHall(models.Model):
 
 
 class Seat(models.Model):
-    reservation = models.Choices(['Occupied', 'Empty'])
+
+    OCCUPIED = 'O'
+    EMPTY = 'E'
+    STATUS_CHOICES = [
+        (OCCUPIED, 'Occupied'),
+        (EMPTY, 'Empty')
+    ]
+
+    reservation = models.CharField(max_length=10, choices=STATUS_CHOICES, default=EMPTY)
 
