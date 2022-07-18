@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.functional import cached_property
-
-# Create your models here.
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Movie(models.Model):
@@ -51,3 +50,18 @@ class Seat(models.Model):
 
     reservation = models.CharField(max_length=10, choices=STATUS_CHOICES, default=EMPTY)
 
+    def __str__(self):
+        return self.reservation
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=40)
+    email = models.EmailField()
+    phone = PhoneNumberField()
+    city = models.CharField(max_length=20, blank=True, null=True)
+    cinema = models.CharField(max_length=30, blank=True, null=True)
+    subject = models.CharField(max_length=100)
+    message = models.CharField(max_length=1500)
+
+    def __str__(self):
+        return self.email
