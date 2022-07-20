@@ -1,15 +1,15 @@
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-import cinema.views
 from .forms import ContactForm, UserRegisterForm
-from django.contrib.auth import login, get_user_model
-from django.contrib import messages
+from django.contrib.auth import get_user_model
+from ratelimit.decorators import ratelimit
+from ratelimit.exceptions import Ratelimited
 
 # Homepage view
 from .token import account_activation_token
@@ -20,6 +20,7 @@ def home(request):
 
 
 # Contact view
+@ratelimit(key='ip', rate='1/5m', method='POST', block=True)
 def contact(request):
     if request.method == 'POST':
         contact_form = ContactForm(request.POST)
@@ -33,6 +34,7 @@ def contact(request):
     return render(request, 'contact.html', context)
 
 
+@ratelimit(key='ip', rate='1/h', method='POST', block=True)
 def register_request(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
@@ -54,7 +56,7 @@ def register_request(request):
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-            return redirect(cinema.views.home)
+            return redirect(home)
     else:
         form = UserRegisterForm()
     return render(
@@ -64,6 +66,7 @@ def register_request(request):
     )
 
 
+@ratelimit(key='ip', rate='1/h', method='POST', block=True)
 def activate_account(request, uidb64, token):
     user = get_user_model()
     try:
@@ -77,3 +80,9 @@ def activate_account(request, uidb64, token):
         return render(request, 'registration/registration_complete.html')
     else:
         return render(request, 'registration/registration_complete.html')
+
+
+def handler403(request, exception=None):
+    if isinstance(exception, Ratelimited):
+        return render(request, 'errors/rate_limit_exceeded.html')
+    return HttpResponseForbidden('Forbidden')

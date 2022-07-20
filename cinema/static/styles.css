@@ -175,7 +175,7 @@ input[required="required"]::after {
     color: red;
 }
 
-.account-form-wrapper {
+.account-form-wrapper, .error-wrapper {
     display: flex;
     flex-direction: column !important;
     justify-content: center;
