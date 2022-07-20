@@ -31,7 +31,7 @@ class Cinema(models.Model):
 
 
 class CinemaHall(models.Model):
-    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE)
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='halls')
     name = models.CharField(max_length=30)
     number_of_seats = models.IntegerField()
     description = models.CharField(max_length=300)
@@ -42,7 +42,7 @@ class CinemaHall(models.Model):
 
 class Seat(models.Model):
 
-    hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE)
+    hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, related_name='seats')
     code = models.CharField(max_length=4, default='1A')
     occupied = models.BooleanField(default=False)
 
