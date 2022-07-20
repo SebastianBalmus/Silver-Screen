@@ -24,15 +24,15 @@ class Cinema(models.Model):
     description = models.CharField(max_length=300)
     city = models.CharField(max_length=30)
     address = models.CharField(max_length=70)
-    hall = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
 
 
 class CinemaHall(models.Model):
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
-    seats = models.IntegerField()
+    number_of_seats = models.IntegerField()
     description = models.CharField(max_length=300)
 
     def __str__(self):
@@ -41,17 +41,12 @@ class CinemaHall(models.Model):
 
 class Seat(models.Model):
 
-    OCCUPIED = 'O'
-    EMPTY = 'E'
-    STATUS_CHOICES = [
-        (OCCUPIED, 'Occupied'),
-        (EMPTY, 'Empty')
-    ]
-
-    reservation = models.CharField(max_length=10, choices=STATUS_CHOICES, default=EMPTY)
+    hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE)
+    code = models.CharField(max_length=4, default='1A')
+    occupied = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.reservation
+        return f'Seat {self.code} in hall {str(self.hall)}'
 
 
 class Contact(models.Model):
