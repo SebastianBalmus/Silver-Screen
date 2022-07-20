@@ -47,6 +47,8 @@ min-height: 100vh;
     transition: .5s;
 }
 
+
+
 .footer {
     height: 100px;
     width: 100%;
@@ -124,7 +126,7 @@ min-height: 100vh;
     margin: auto;
 }
 
-input[type=text], input[type=email], input[type=tel], select, textarea {
+input[type=text], input[type=email], input[type=tel], input[type=password], select, textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -134,16 +136,25 @@ input[type=text], input[type=email], input[type=tel], select, textarea {
   resize: vertical;
 }
 
-input[type=submit] {
+input[type=submit], .passresetbtn {
   background-color: #262626;
   color: white;
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
 }
 
-input[type=submit]:hover {
+.passresetbtn a {
+    text-decoration: none;
+    color: white;
+}
+
+input[type=submit]:hover, .passresetbtn:hover {
   background-color: #3d3d3d;
 }
 
@@ -154,7 +165,7 @@ input[type=submit]:hover {
 .errorlist li{
     padding: 5px;
     color: red;
-    font-size: 10px;
+    font-size: 15px;
     margin: auto;
     width: 100%;
 }
@@ -162,4 +173,37 @@ input[type=submit]:hover {
 input[required="required"]::after {
     content: "*";
     color: red;
+}
+
+.account-form-wrapper {
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 20px;
+}
+
+.account-form {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 30px;
+    background: #F5F5F5;
+}
+
+.buttoncontainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.login-errors {
+    margin: 20px;
+    color: red;
+}
+
+.helptext ul, .account-form ul {
+    font-size: 10px;
+}
+
+.account-form p {
+    margin: 10px;
 }
