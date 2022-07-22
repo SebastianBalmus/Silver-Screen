@@ -18,6 +18,10 @@ class Movie(models.Model):
     def imdb_link(self):
         return 'https://www.imdb.com/title/' + self.imdb_id.__str__()
 
+    @cached_property
+    def embed_trailer(self):
+        return self.trailer_link.__str__().replace('watch?v=', 'embed/')
+
 
 class Cinema(models.Model):
     name = models.CharField(max_length=30)

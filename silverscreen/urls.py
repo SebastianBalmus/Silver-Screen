@@ -20,11 +20,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include('cinema.urls')),
+    path('account/', include('registration.urls')),
     path('admin/', admin.site.urls),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-handler403 = 'cinema.views.handler403'
+handler403 = 'errors.views.handler403'
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

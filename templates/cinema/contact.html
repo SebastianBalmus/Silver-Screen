@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Contact us</title>
+{% endblock title %}
+
+{% block body %}
+<div class="wrapper">
+    <h1>CONTACT US</h1>
+</div>
+
+<div class="form-wrapper">
+    <form method="post">
+        {% csrf_token %}
+        {% for question in form %}
+        <div class="question">
+            <p>
+                {{question.label}}{% if question.field.required %}<ins style="color: red">*</ins>{% endif %}
+                {{question}}
+            </p>
+            {{question.errors}}
+        </div>
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+{% endblock body %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Currently playing</title>
+{% endblock title %}
+
+{% block body %}
+<div class="wrapper">
+    <h1>CURRENTLY PLAYING</h1>
+</div>
+<div class="results-container">
+    {% for movie in page_obj %}
+    <div class="movie-container">
+        <img src="{{ movie.poster.url }}"/>
+        <div class="movie-content">
+            <h1>{{ movie }}</h1>
+            <p style="text-align: justify; text-justify: inter-word">Description: {{ movie.description }}</p>
+            <p>Length: {{ movie.length }}</p>
+            <div class="button-container">
+                <button type="button" class="light-button" onclick="">Book now</button>
+                <button type="button" class="light-button" onclick="location.href='{{ movie.imdb_link }}'">See more on IMDb</button>
+            </div>
+        </div>
+        <iframe width="300" height="202" src="{{ movie.embed_trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    {% endfor %}
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="page-button">first</a>
+            {% if page_obj.previous_page_number != 1 %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="page-button">Previous</a>
+            {% endif %}
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+                <a href="?page={{ page_obj.next_page_number }}" class="page-button">next</a>
+            {% endif %}
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-button">last</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock body %}
