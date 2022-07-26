@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'registration',
     'errors',
     'phonenumber_field',
+    'smart_selects',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EET'
 
 USE_I18N = True
 
@@ -150,3 +151,5 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '127.0.0.1'
 EMAIL_PORT = 1025
+
+USE_DJANGO_JQUERY = True

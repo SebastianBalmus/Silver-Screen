@@ -193,6 +193,8 @@ input[required="required"]::after {
 .button-container {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .login-errors {

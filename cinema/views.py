@@ -1,7 +1,11 @@
+import datetime
+
 from django.shortcuts import render
+from django.utils import timezone
+
 from .forms import ContactForm
 from ratelimit.decorators import ratelimit
-from cinema.models import Movie
+from cinema.models import Schedule, Movie
 from django.core.paginator import Paginator
 
 
@@ -27,7 +31,11 @@ def contact(request):
 
 # Currently playing movies
 def currently_playing(request):
-    movie_list = Movie.objects.get_queryset().order_by('name')
+    movie_list = Movie.objects.filter(
+        schedule__isnull=False,
+        schedule__playing_time__lte=timezone.now()+timezone.timedelta(days=6),
+        schedule__playing_time__gt=timezone.now()
+    ).distinct()
     paginator = Paginator(movie_list, 5)
 
     page_number = request.GET.get('page')
