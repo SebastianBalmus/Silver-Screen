@@ -22,11 +22,11 @@ class Movie(models.Model):
 
     @cached_property
     def imdb_link(self):
-        return 'https://www.imdb.com/title/' + self.imdb_id.__str__()
+        return 'https://www.imdb.com/title/' + str(self.imdb_id)
 
     @cached_property
     def embed_trailer(self):
-        return self.trailer_link.__str__().replace('watch?v=', 'embed/')
+        return str(self.trailer_link).replace('watch?v=', 'embed/')
 
 
 class Cinema(models.Model):
@@ -72,8 +72,8 @@ class Contact(models.Model):
 
 
 class Schedule(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, default=None)
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, default=None)
     hall = ChainedForeignKey(
         CinemaHall,
         chained_field='cinema',
@@ -84,39 +84,33 @@ class Schedule(models.Model):
     )
     playing_time = models.DateTimeField()
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['cinema', 'hall', 'playing_time'],
+                name='unique_schedule'
+            )
+        ]
+
     @cached_property
     def end_time(self):
+
         end_time = self.playing_time
         parsed_time = re.findall(r'\d+[ ]?', self.movie.length)
 
-        end_hour = end_time.hour + int(parsed_time[0])
-        end_minute = end_time.minute + int(parsed_time[1])
-
-        if end_minute > 59:
-            end_hour += 1
-            end_minute -= 60
-
-        if end_hour > 23:
-            end_time = self.playing_time + timedelta(days=1)
-            end_hour -= 24
-
-        end_time = end_time.replace(
-            hour=end_hour,
-            minute=end_minute,
+        end_time += timezone.timedelta(
+            hours=int(parsed_time[0]),
+            minutes=int(parsed_time[1])
         )
 
         return end_time
 
-    def clean(self):
+    def save(self, *args, **kwargs):
+        super(Schedule, self).save(*args, **kwargs)
 
-        for obj in Schedule.objects.all():
-            if (
-                    self.cinema.name == obj.cinema.name
-                    and self.hall.name == obj.hall.name
-                    and self.playing_time <= obj.end_time
-                    and self.end_time >= obj.playing_time
-            ):
-                raise ValidationError('There is a movie playing in that interval')
+        pass
+
+    def clean(self):
 
         if self.playing_time <= timezone.now():
             raise ValidationError('You can\'t schedule a movie in the past!')

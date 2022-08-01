@@ -1,17 +1,7 @@
+from curses.ascii import isalpha
 from django import forms
-
-
 from .models import Contact
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
-import re
-
-
-def is_only_char(field):
-
-    if re.search(r'\d', field):
-        return False
-
-    return True
 
 
 class ContactForm(forms.ModelForm):
@@ -31,7 +21,7 @@ class ContactForm(forms.ModelForm):
     def clean(self):
         super(ContactForm, self).clean()
 
-        if not is_only_char(self.cleaned_data['name']):
+        if not isalpha(self.cleaned_data['name']):
             error_message = 'Your name can\'t contain numbers!'
             self.add_error('name', error_message)
             raise forms.ValidationError(error_message)
