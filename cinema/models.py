@@ -105,11 +105,6 @@ class Schedule(models.Model):
 
         return end_time
 
-    def save(self, *args, **kwargs):
-        super(Schedule, self).save(*args, **kwargs)
-
-        pass
-
     def clean(self):
 
         if self.playing_time <= timezone.now():
