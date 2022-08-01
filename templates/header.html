@@ -1,0 +1,17 @@
+{% block header %}
+{% load static %}
+<div class="nav-area">
+  <img src="{% static 'img/logo.png' %}" alt="logo" class="logo">
+  <ul>
+    {% if user.is_authenticated %}
+      <li><a href="{% url 'logout' %}">Log out</a></li>
+    {% else %}
+    <li><a href="{% url 'login' %}">Log in</a></li>
+    <li><a href="{% url 'register' %}">Register</a></li>
+    {% endif %}
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'currently_playing' %}">Movies</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+  </ul>
+</div>
+{% endblock header %}
