@@ -109,3 +109,4 @@ class Schedule(models.Model):
 
         if self.playing_time <= timezone.now():
             raise ValidationError('You can\'t schedule a movie in the past!')
+            
