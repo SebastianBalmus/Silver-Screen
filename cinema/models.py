@@ -72,9 +72,9 @@ class Contact(models.Model):
 
 
 class Schedule(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, default=None, related_name='movies')
-    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, default=None, related_name='cinemas')
-    hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, default=None, related_name='halls')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, default=None)
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, default=None)
+    hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, default=None)
     playing_time = models.DateTimeField()
 
     def __str__(self):
