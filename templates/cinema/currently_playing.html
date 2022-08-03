@@ -17,7 +17,7 @@
             <p style="text-align: justify; text-justify: inter-word">Description: {{ movie.description }}</p>
             <p>Length: {{ movie.length }}</p>
             <div class="button-container">
-                <button type="button" class="light-button" onclick="">Book now</button>
+                 <a href="{% url 'reservation' pk=movie.pk %}"><button type="button" class="light-button">Book now</button></a>
                 <button type="button" class="light-button" onclick="location.href='{{ movie.imdb_link }}'">See more on IMDb</button>
             </div>
         </div>

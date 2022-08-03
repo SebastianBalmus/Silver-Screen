@@ -72,17 +72,13 @@ class Contact(models.Model):
 
 
 class Schedule(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, default=None)
-    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, default=None)
-    hall = ChainedForeignKey(
-        CinemaHall,
-        chained_field='cinema',
-        chained_model_field='cinema',
-        show_all=False,
-        auto_choose=True,
-        sort=True,
-    )
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, default=None, related_name='movies')
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, default=None, related_name='cinemas')
+    hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, default=None, related_name='halls')
     playing_time = models.DateTimeField()
+
+    def __str__(self):
+        return f'{self.movie} playing in {self.cinema} on {self.playing_time}'
 
     class Meta:
         constraints = [

@@ -1,12 +1,14 @@
-import datetime
-
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 
 from .forms import ContactForm
 from ratelimit.decorators import ratelimit
-from cinema.models import Schedule, Movie
+from cinema.models import Schedule, Movie, Cinema, CinemaHall
 from django.core.paginator import Paginator
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 
 # Homepage view
@@ -41,3 +43,15 @@ def currently_playing(request):
     page_number = request.GET.get('page')
     page_object = paginator.get_page(page_number)
     return render(request, 'cinema/currently_playing.html', {'page_obj': page_object})
+
+
+class HallList(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request, format=None):
+        cinema = request.POST.get('cinema')
+        hall = {}
+        if cinema:
+            halls = Cinema.objects.get(id=cinema).halls.all()
+            hall = {item.name: item.id for item in halls}
+        return JsonResponse(data=hall, safe=False)

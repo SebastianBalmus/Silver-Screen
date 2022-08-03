@@ -1,3 +1,4 @@
+from cinema.forms import ScheduleForm
 from django.contrib import admin
 from .models import Cinema, CinemaHall, Contact, Movie, Schedule
 
@@ -64,6 +65,7 @@ class MovieAdmin(admin.ModelAdmin):
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
+    form = ScheduleForm
     list_display = (
         'movie',
         'cinema',
@@ -71,3 +73,8 @@ class ScheduleAdmin(admin.ModelAdmin):
         'playing_time',
         'end_time',
     )
+
+    class Media:
+        js = (
+            'js/admin_schedule.js',
+        )
