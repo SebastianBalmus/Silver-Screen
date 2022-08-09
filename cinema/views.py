@@ -4,7 +4,7 @@ from django.utils import timezone
 
 from .forms import ContactForm
 from ratelimit.decorators import ratelimit
-from cinema.models import Schedule, Movie, Cinema, CinemaHall
+from cinema.models import Movie, Cinema
 from django.core.paginator import Paginator
 
 from rest_framework.views import APIView

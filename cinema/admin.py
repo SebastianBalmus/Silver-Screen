@@ -1,6 +1,6 @@
 from cinema.forms import ScheduleForm
 from django.contrib import admin
-from .models import Cinema, CinemaHall, Contact, Movie, Schedule
+from .models import Cinema, CinemaHall, Contact, Movie, Schedule, Seat
 
 
 class CinemaHallInline(admin.TabularInline):
@@ -78,3 +78,6 @@ class ScheduleAdmin(admin.ModelAdmin):
         js = (
             'js/admin_schedule.js',
         )
+
+
+admin.site.register(Seat)

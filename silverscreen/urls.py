@@ -23,7 +23,6 @@ urlpatterns = [
     path('account/', include('registration.urls')),
     path('admin/', admin.site.urls),
     path('reservation/', include('reservation.urls')),
-    re_path(r'^chaining/', include('smart_selects.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
