@@ -13,6 +13,7 @@ class ReservationManager(models.Manager):
             seat=seat,
             time_created=timezone.now()
         )
+        return reservation
 
 
 class Reservation(models.Model):

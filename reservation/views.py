@@ -2,7 +2,6 @@ from datetime import datetime
 
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
-from django.template import Context
 from django.shortcuts import render, get_object_or_404
 from cinema.models import Movie, Schedule, Seat
 from reservation.forms import ReservationFilterForm
@@ -34,14 +33,11 @@ def select_seats(request, movie, schedule):
     movie_object = get_object_or_404(Movie, pk=movie)
     schedule_object = get_object_or_404(Schedule, pk=schedule)
 
-    hall = Schedule.objects.values_list('hall', flat=True).get(id=schedule)
+    hall = Schedule.objects.values_list('hall', flat=True).get(id=schedule_object.id)
     seat_list = Seat.objects.filter(hall=hall)
 
     # Get the already booked seats, so we can block them in the template
-    existent_reservations = Reservation.objects.filter(details=schedule_object)
-    occupied_seat_ids = []
-    for item in existent_reservations:
-        occupied_seat_ids.append(item.seat_id)
+    occupied_seat_ids = Reservation.objects.filter(details=schedule_object).values_list('seat', flat=True)
 
     context = {
         'movie': movie_object,
@@ -62,19 +58,13 @@ def select_seats(request, movie, schedule):
         for seat in selected_seats:
 
             seat_obj = Seat.objects.get(id=seat)
-            Reservation.objects.create_reservation(
+            user_reservation = Reservation.objects.create_reservation(
                 user=request.user,
                 details=schedule_object,
                 seat=seat_obj,
             )
-            reservations.append(
-                Reservation.objects.get(
-                    user=request.user,
-                    details=schedule_object,
-                    seat=seat_obj
-                )
-            )
-        print(reservations)
+            reservations.append(user_reservation)
+
         send_tickets(request, reservations, schedule_object)
         return render(request, 'reservation/success.html')
 
@@ -85,10 +75,10 @@ def send_tickets(request, reservation_ids, schedule):
     subject, from_email, to = 'Your tickets', 'office@silverscreen.com', (request.user.email,)
     email_text = get_template('reservation/reservation_successful.html')
     context = {
-            'user': request.user,
-            'tickets': reservation_ids,
-            'schedule': schedule,
-        }
+        'user': request.user,
+        'tickets': reservation_ids,
+        'schedule': schedule,
+    }
 
     html_content = email_text.render(context)
     msg = EmailMessage(
