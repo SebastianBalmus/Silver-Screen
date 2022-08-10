@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cinema',
+    'reservation',
     'registration',
     'errors',
     'phonenumber_field',
-    'smart_selects',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,7 @@ STATICFILES_DIRS = [
 ]
 
 # Base url to serve media files
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -151,5 +152,3 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '127.0.0.1'
 EMAIL_PORT = 1025
-
-USE_DJANGO_JQUERY = True

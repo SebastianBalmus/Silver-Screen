@@ -1,6 +1,7 @@
 from curses.ascii import isalpha
 from django import forms
-from .models import Contact
+
+from .models import Contact, Schedule, CinemaHall
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
 
 
@@ -27,3 +28,21 @@ class ContactForm(forms.ModelForm):
             raise forms.ValidationError(error_message)
 
         return self.cleaned_data
+
+
+class ScheduleForm(forms.ModelForm):
+    class Meta:
+        model = Schedule
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ScheduleForm, self).__init__(*args, **kwargs)
+        self.fields['hall'].queryset = CinemaHall.objects.none()
+        if 'cinema' in self.data:
+            try:
+                cinema_id = self.data.get('cinema')
+                self.fields['hall'].queryset = CinemaHall.objects.filter(cinema_id=cinema_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['hall'].queryset = self.instance.cinema.halls.order_by('name')

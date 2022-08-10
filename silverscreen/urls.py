@@ -22,11 +22,10 @@ urlpatterns = [
     path('', include('cinema.urls')),
     path('account/', include('registration.urls')),
     path('admin/', admin.site.urls),
-    re_path(r'^chaining/', include('smart_selects.urls')),
+    path('reservation/', include('reservation.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler403 = 'errors.views.handler403'
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

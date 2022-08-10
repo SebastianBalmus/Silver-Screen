@@ -136,7 +136,7 @@ input[type=text], input[type=email], input[type=tel], input[type=password], sele
   resize: vertical;
 }
 
-input[type=submit], .passresetbtn {
+input[type=submit], .passresetbtn, .dark-button {
   background-color: #262626;
   color: white;
   padding: 12px 20px;
@@ -154,7 +154,7 @@ input[type=submit], .passresetbtn {
     color: white;
 }
 
-input[type=submit]:hover, .passresetbtn:hover {
+input[type=submit]:hover, .passresetbtn:hover, .dark-button:hover {
   background-color: #3d3d3d;
 }
 
@@ -184,7 +184,7 @@ input[required="required"]::after {
     padding: 20px;
 }
 
-.account-form {
+.account-form, .booking-form {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 30px;
     background: #F5F5F5;
@@ -297,4 +297,74 @@ input[required="required"]::after {
     color: #FFFFFF;
     background: #262626;
     transition: 1s;
+}
+
+.booking-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.movie-schedule-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.movie-schedule {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    background: #262626;
+    border-radius: 20px;
+    height: 100px;
+    width: 500px;
+    margin: 10px;
+}
+
+.movie-schedule p, .movie-schedule dark-button {
+    margin: 20px;
+}
+
+.movie-schedule p {
+    color: #FFFFFF
+}
+
+.seat-selection-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.seats-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.seat-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 60px;
+    height: 60px;
+}
+
+input[type=checkbox], input[type=checkbox][disabled] {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+input[type=checkbox][disabled]{
+  outline: 5px solid red; // or whatever
 }

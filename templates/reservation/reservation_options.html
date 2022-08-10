@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>{{ movie.title }}</title>
+{% endblock title %}
+
+{% block body %}
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="booking-container">
+        <div class="movie-booking-container">
+            <img style="height: 400px" src="{{ movie.poster.url }}"/>
+            <div class="movie-content" style="color:#262626">
+                <h1>{{movie.name}}</h1>
+                <h3>Length: {{ movie.length }}</h3>
+            </div>
+        </div>
+        <div class="booking-form" style="margin: 20px;">
+            <form method="post">
+            {% csrf_token %}
+            {{ form.media.js }}
+            {% for question in form %}
+            <div class="question">
+                <p>
+                    {{question.label}}{% if question.field.required %}<ins style="color: red">*</ins>{% endif %}
+                    {{question}}
+                </p>
+                {{question.errors}}
+            </div>
+            {% endfor %}
+            <input type="submit" value="Filter">
+        </form>
+        </div>
+    </div>
+    <div class="movie-schedule-container">
+        {% for object in schedule %}
+        <div class="movie-schedule">
+            <p>{{ object.playing_time }}</p>
+            <a href="{% url 'select_seats' movie=movie.pk schedule=object.pk %}"><button type="button" class="light-button">Book now</button></a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock body %}

@@ -1,10 +1,7 @@
 from django.db import models
-from datetime import timedelta
-
 from django.utils import timezone
 from django.utils.functional import cached_property
 from phonenumber_field.modelfields import PhoneNumberField
-from smart_selects.db_fields import ChainedForeignKey
 import re
 from django.core.exceptions import ValidationError
 
@@ -57,6 +54,10 @@ class Seat(models.Model):
     def __str__(self):
         return f'Seat {self.code} in hall {str(self.hall)}'
 
+    @cached_property
+    def number(self):
+        return int(self.code[1:])
+
 
 class Contact(models.Model):
     name = models.CharField(max_length=40)
@@ -74,15 +75,11 @@ class Contact(models.Model):
 class Schedule(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, default=None)
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, default=None)
-    hall = ChainedForeignKey(
-        CinemaHall,
-        chained_field='cinema',
-        chained_model_field='cinema',
-        show_all=False,
-        auto_choose=True,
-        sort=True,
-    )
+    hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, default=None)
     playing_time = models.DateTimeField()
+
+    def __str__(self):
+        return f'{self.movie} playing in {self.cinema} on {self.playing_time}'
 
     class Meta:
         constraints = [
@@ -100,7 +97,7 @@ class Schedule(models.Model):
 
         end_time += timezone.timedelta(
             hours=int(parsed_time[0]),
-            minutes=int(parsed_time[1])
+            minutes=int(parsed_time[1]),
         )
 
         return end_time

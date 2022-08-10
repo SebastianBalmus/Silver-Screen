@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ movie.title }}
+{% endblock title %}
+
+{% block body %}
+
+<form method="post">
+
+    {% csrf_token %}
+    <div class="seat-selection-container">
+        {% for message in messages %}
+        <p style="margin:30px; color: red;">{{ message }}</p>
+        {% endfor %}
+    <div class="seats-row">
+        {% for seat in seats %}
+            <div class="seat-item">
+                {% if seat.id in occupied_seats %}
+                <input type="checkbox" value="{{ seat.id }}" name="checkboxes" disabled>
+                {% else %}
+                <input type="checkbox" value="{{ seat.id }}" name="checkboxes">
+                {% endif %}
+                <label for="{{ seat.id }}">{{ seat.code }}</label>
+            </div>
+            {% if seat.number|divisibleby:10 %}
+                </div>
+                <br>
+                <div class="seats-row">
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+    <div class="button-container" style="margin-bottom: 10px;">
+        <input type="submit" value="Book my tickets!">
+    </div>
+</form>
+
+{% endblock body %}
