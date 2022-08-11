@@ -1,4 +1,3 @@
-from curses.ascii import isalpha
 from django import forms
 
 from .models import Contact, Schedule, CinemaHall
@@ -22,7 +21,7 @@ class ContactForm(forms.ModelForm):
     def clean(self):
         super(ContactForm, self).clean()
 
-        if not isalpha(self.cleaned_data['name']):
+        if not self.cleaned_data['name'].isalpha():
             error_message = 'Your name can\'t contain numbers!'
             self.add_error('name', error_message)
             raise forms.ValidationError(error_message)

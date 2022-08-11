@@ -25,4 +25,7 @@ class ReservationFilterForm(forms.Form):
 
     def __init__(self, movie_id):
         super().__init__()
-        self.fields['cinema'].queryset = Cinema.objects.filter(schedule__movie=movie_id).distinct()
+        self.fields['cinema'].queryset = Cinema.objects.filter(
+            schedule__movie=movie_id,
+            schedule__playing_time__gte=timezone.now()
+        ).distinct()

@@ -17,7 +17,7 @@ def home(request):
 
 
 # Contact view
-@ratelimit(key='ip', rate='1/5m', method='POST', block=True)
+@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def contact(request):
     if request.method == 'POST':
         contact_form = ContactForm(request.POST)

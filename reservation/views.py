@@ -1,14 +1,15 @@
 from datetime import datetime
-
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.shortcuts import render, get_object_or_404
+from ratelimit.decorators import ratelimit
 from cinema.models import Movie, Schedule, Seat
 from reservation.forms import ReservationFilterForm
 from django.contrib import messages
 from reservation.models import Reservation
 
 
+@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def reservation_options(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     form = ReservationFilterForm(movie_id=movie)
@@ -29,12 +30,13 @@ def reservation_options(request, pk):
     return render(request, 'reservation/reservation_options.html', context)
 
 
+@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def select_seats(request, movie, schedule):
     movie_object = get_object_or_404(Movie, pk=movie)
     schedule_object = get_object_or_404(Schedule, pk=schedule)
 
-    hall = Schedule.objects.values_list('hall', flat=True).get(id=schedule_object.id)
-    seat_list = Seat.objects.filter(hall=hall)
+    hall = schedule_object.hall
+    seat_list = hall.seats.all()
 
     # Get the already booked seats, so we can block them in the template
     occupied_seat_ids = Reservation.objects.filter(details=schedule_object).values_list('seat', flat=True)
