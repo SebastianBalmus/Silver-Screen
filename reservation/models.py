@@ -21,6 +21,7 @@ class Reservation(models.Model):
     details = models.ForeignKey(Schedule, on_delete=models.CASCADE)
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True)
+    confirmed = models.BooleanField(default=False)
     objects = ReservationManager()
 
     def __str__(self):
