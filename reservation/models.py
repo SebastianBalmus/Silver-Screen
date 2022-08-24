@@ -26,5 +26,3 @@ class Reservation(models.Model):
 
     def __str__(self):
         return self.user.username + ' - ' + str(self.details)
-
-

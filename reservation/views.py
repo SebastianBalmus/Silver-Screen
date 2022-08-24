@@ -7,6 +7,7 @@ from cinema.models import Movie, Schedule, Seat
 from reservation.forms import ReservationFilterForm
 from django.contrib import messages
 from reservation.models import Reservation
+from django.contrib.sites.models import Site
 
 
 @ratelimit(key='ip', rate='10/m', method='POST', block=True)
@@ -65,17 +66,43 @@ def select_seats(request, movie, schedule):
                 details=schedule_object,
                 seat=seat_obj,
             )
+
             reservations.append(user_reservation)
 
-        send_tickets(request, reservations, schedule_object)
-        return render(request, 'reservation/success.html')
+        confirm_reservation(request, reservations, schedule)
+        return render(request, 'reservation/reservation_email_sent.html')
 
     return render(request, 'reservation/select_seats.html', context)
 
 
-def send_tickets(request, reservation_ids, schedule):
+def success(request, reservation):
+    Reservation.objects.filter(id=reservation).update(confirmed=True)
+    send_tickets(request, reservation)
+
+    return render(request, 'reservation/success.html')
+
+
+def send_tickets(request, reservation):
     subject, from_email, to = 'Your tickets', 'office@silverscreen.com', (request.user.email,)
     email_text = get_template('reservation/reservation_successful.html')
+    context = {
+        'user': request.user,
+        'ticket': reservation,
+    }
+
+    html_content = email_text.render(context)
+    msg = EmailMessage(
+        subject=subject,
+        body=html_content,
+        from_email=from_email,
+        to=to
+    )
+    msg.send()
+
+
+def confirm_reservation(request, reservation_ids, schedule):
+    subject, from_email, to = 'Confirm your reservation', 'office@silverscreen.com', (request.user.email,)
+    email_text = get_template('reservation/confirm_reservation.html')
     context = {
         'user': request.user,
         'tickets': reservation_ids,
@@ -90,3 +117,4 @@ def send_tickets(request, reservation_ids, schedule):
         to=to
     )
     msg.send()
+
