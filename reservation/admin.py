@@ -10,6 +10,7 @@ class ReservationAdmin(admin.ModelAdmin):
         'details',
         'seat',
         'confirmed',
+        'expired',
     )
 
     list_filter = (

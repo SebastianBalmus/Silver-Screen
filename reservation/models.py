@@ -22,7 +22,13 @@ class Reservation(models.Model):
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True)
     confirmed = models.BooleanField(default=False)
+    expired = models.BooleanField(default=False)
     objects = ReservationManager()
 
     def __str__(self):
         return self.user.username + ' - ' + str(self.details)
+
+    @property
+    def reservation_group(self):
+        return f'{str(self.user.id)}%{self.details.id}'
+

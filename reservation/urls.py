@@ -6,7 +6,7 @@ urlpatterns = [
     path('<int:pk>', views.reservation_options, name='reservation'),
     path('movie=<int:movie>/schedule=<int:schedule>', views.select_seats, name='select_seats'),
     path('confirm/<int:reservation>', views.confirm_reservation, name='confirm_reservation'),
-    path('success/<int:reservation>', views.success, name='reservation_successful')
+    path('success/<str:group>', views.success, name='reservation_successful')
 ]
 
 urlpatterns += staticfiles_urlpatterns()
