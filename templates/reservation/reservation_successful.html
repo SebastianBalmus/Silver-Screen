@@ -1,7 +1,7 @@
 {% autoescape off %}
 Hi {{ user.username }},
-Your tickets to {{ schedule }} are ready. You reserved the following seats:
+Your tickets are ready. You reserved the following seats:
 {% for ticket in tickets %}
-{{ ticket.seat }}
+{{ ticket.seat.code }}
 {% endfor %}
 {% endautoescape %}

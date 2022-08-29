@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hi {{ user.username }},
+Your reservation to {{ schedule.movie }} is almost ready. You reserved:
+{% for ticket in tickets %}
+{{ ticket.seat }}
+{% endfor %}
+To confirm your reservation, please click the following link:
+http://localhost:8000{% url 'reservation_successful' group=schedule_group %}
+{% endautoescape %}
