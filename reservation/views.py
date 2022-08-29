@@ -2,9 +2,8 @@ from datetime import datetime
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
 from ratelimit.decorators import ratelimit
-from cinema.models import Movie, Schedule, Seat
+from cinema.models import Movie, Schedule
 from reservation.forms import ReservationFilterForm
 from django.contrib import messages
 from reservation.models import Reservation
@@ -59,18 +58,16 @@ def select_seats(request, movie, schedule):
     elif request.POST:
 
         selected_seats = request.POST.getlist('checkboxes')
-        reservations = []
 
-        for seat in selected_seats:
-
-            seat_obj = Seat.objects.get(id=seat)
-            user_reservation = Reservation.objects.create_reservation(
+        reservations = [
+            Reservation(
                 user=request.user,
                 details=schedule_object,
-                seat=seat_obj,
-            )
+                seat_id=seat_id
+            ) for seat_id in selected_seats
+        ]
 
-            reservations.append(user_reservation)
+        Reservation.objects.bulk_create(reservations)
 
         confirm_reservation(request, reservations, schedule)
         return render(request, 'reservation/reservation_email_sent.html')
@@ -82,10 +79,9 @@ def success(request, group):
 
     reservations = list(map(int, group.split('-')))
 
-    for reservation in reservations:
-        Reservation.objects.filter(
-            id=reservation
-        ).update(confirmed=True)
+    Reservation.objects.filter(
+        id__in=reservations
+    ).update(confirmed=True)
 
     send_tickets(request, reservations)
 
@@ -96,7 +92,7 @@ def send_tickets(request, reservations):
     subject, from_email, to = 'Your tickets', 'office@silverscreen.com', (request.user.email,)
     email_text = get_template('reservation/reservation_successful.html')
 
-    tickets = [Reservation.objects.get(id=reservation) for reservation in reservations]
+    tickets = Reservation.objects.filter(id__in=reservations)
 
     context = {
         'user': request.user,
@@ -135,4 +131,3 @@ def confirm_reservation(request, reservations, schedule):
         to=to
     )
     msg.send()
-

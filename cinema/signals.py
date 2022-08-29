@@ -14,12 +14,14 @@ def generate_seats(sender, instance, created, **kwargs):
             for iterator in range(instance.number_of_seats)
         ]
 
-        if not Seat.objects.filter(code='A1', hall=instance).exists():
-            for code in seat_codes:
+        seats = [
+            Seat(
+                hall=instance,
+                code=code,
+                occupied=False,
+            ) for code in seat_codes
+        ]
 
-                seat = Seat(
-                    hall=instance,
-                    code=code,
-                    occupied=False
-                )
-                seat.save()
+        if not Seat.objects.filter(code='A1', hall=instance).exists():
+            Seat.objects.bulk_create(seats)
+

@@ -27,8 +27,3 @@ class Reservation(models.Model):
 
     def __str__(self):
         return self.user.username + ' - ' + str(self.details)
-
-    @property
-    def reservation_group(self):
-        return f'{str(self.user.id)}%{self.details.id}'
-
