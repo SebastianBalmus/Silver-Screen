@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'reservation',
     'registration',
     'errors',
+    'newsletter',
     'phonenumber_field',
     'rest_framework',
 ]
