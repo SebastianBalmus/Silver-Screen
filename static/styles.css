@@ -50,19 +50,29 @@ min-height: 100vh;
 
 
 .footer {
-    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
     background-color: #262626;
     color: white;
     text-align: center;
     align-self: flex-end;
     margin-top: auto;
+    padding: 10px;
 }
 
 .footer p{
     padding-top: 15px !important;
     padding: 5px;
     text-transform: uppercase;
+}
+
+.footer a{
+    text-decoration: none;
+    color: white;
+    text-capitalize: true;
 }
 
 .icon {
