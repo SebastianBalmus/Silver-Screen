@@ -15,7 +15,7 @@ class NewsletterRegistrationForm(ModelForm):
         cleaned_data = self.cleaned_data
         request_email = cleaned_data['email']
 
-        if request_email and SubscribedUser.objects.filter(email=request_email):
+        if request_email and SubscribedUser.objects.filter(email=request_email).exists():
             error_message = 'You are already subscribed to our newsletter!'
             self.add_error('email', error_message)
             raise forms.ValidationError(error_message)
