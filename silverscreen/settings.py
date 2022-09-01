@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'registration',
     'errors',
     'newsletter',
-    'csv_management',
     'phonenumber_field',
     'rest_framework',
 ]
