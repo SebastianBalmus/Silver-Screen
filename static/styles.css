@@ -47,8 +47,6 @@ min-height: 100vh;
     transition: .5s;
 }
 
-
-
 .footer {
     display: flex;
     justify-content: center;
@@ -377,4 +375,30 @@ input[type=checkbox], input[type=checkbox][disabled] {
 
 input[type=checkbox][disabled]{
   outline: 5px solid red; // or whatever
+}
+
+.my-reservations {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 30px;
+}
+
+.table-wrapper {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 30px;
+    background: #F5F5F5;
+}
+
+.table-wrapper table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-wrapper td, th {
+    border: 1px solid #262626;
+    text-align: left;
+    padding: 8px;
 }

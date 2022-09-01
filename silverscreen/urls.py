@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('reservation/', include('reservation.urls')),
     path('newsletter/', include('newsletter.urls')),
+    path('csv/', include('csv_management.urls'))
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

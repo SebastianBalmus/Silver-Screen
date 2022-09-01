@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>My reservations</title>
+{% endblock title %}
+
+{% block body %}
+<div class="my-reservations">
+    <div class="table-wrapper">
+    <table>
+    <tr>
+        <td><strong>Movie</strong></td>
+        <td><strong>Playing time</strong></td>
+        <td><strong>Cinema</strong></td>
+        <td><strong>Hall</strong></td>
+        <td><strong>Seat</strong></td>
+    </tr>
+    {% for reservation in reservations %}
+    <tr>
+        <td>{{ reservation.details.movie }}</td>
+        <td>{{ reservation.details.playing_time }}</td>
+        <td>{{ reservation.details.cinema }}</td>
+        <td>{{ reservation.seat.hall }}</td>
+        <td>{{ reservation.seat.code }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if reservations.has_previous %}
+                <a href="?page=1" class="page-button">first</a>
+                {% if reservations.previous_page_number != 1 %}
+                    <a href="?page={{ reservations.previous_page_number }}" class="page-button">Previous</a>
+                {% endif %}
+            {% endif %}
+
+            <span class="current">
+                Page {{ reservations.number }} of {{ reservations.paginator.num_pages }}
+            </span>
+
+            {% if reservations.has_next %}
+                {% if reservations.next_page_number != reservations.paginator.num_pages %}
+                    <a href="?page={{ reservations.next_page_number }}" class="page-button">next</a>
+                {% endif %}
+                <a href="?page={{ reservations.paginator.num_pages }}" class="page-button">last</a>
+            {% endif %}
+        </span>
+    </div>
+    <a href="{% url 'download_my_reservations' %}"><button type="button" class="dark-button">Download my reservations!</button></a>
+</div>
+{% endblock body %}
