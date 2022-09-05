@@ -223,14 +223,14 @@ input[required="required"]::after {
     flex-direction: column;
     width: 80vw;
     margin: auto;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
 .movie-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     margin: 20px;
@@ -240,26 +240,35 @@ input[required="required"]::after {
     background: #262626;
 }
 
-.movie-container img {
-    max-width: 150px;
-    margin: 10px;
+.movie-details-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
 }
 
-.movie-container iframe {
-    margin: 10px;
+.movie-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    margin: 20px;
+    padding: 10px;
 }
 
 .movie-content {
     display: flex;
-    height: 100%;
+    justify-content: center;
+    align-items: left;
     flex-direction: column;
-    color: white;
-    justify-content: space-between;
-    margin: 10px;
 }
 
-.movie-content p, .light-button {
-    margin: 10px 0px;
+.movie-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
 }
 
 .light-button {
@@ -270,7 +279,7 @@ input[required="required"]::after {
     border: 2px solid #FFFFFF;
     font-size: 20px;
     color: #FFFFFF;
-    margin: auto;
+    margin: 10px;
 }
 
 .light-button:hover {
