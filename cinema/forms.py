@@ -45,3 +45,7 @@ class ScheduleForm(forms.ModelForm):
                 pass
         elif self.instance.pk:
             self.fields['hall'].queryset = self.instance.cinema.halls.order_by('name')
+
+
+class CSVImportForm(forms.Form):
+    csv_file = forms.FileField()

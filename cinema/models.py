@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 class Movie(models.Model):
     name = models.CharField(max_length=50)
-    poster = models.ImageField(upload_to='images')
+    poster = models.ImageField(upload_to='images', blank=True, null=True)
     description = models.CharField(max_length=1000)
     imdb_id = models.CharField(max_length=30)
     trailer_link = models.CharField(max_length=150)
