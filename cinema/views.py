@@ -45,6 +45,14 @@ def currently_playing(request):
     return render(request, 'cinema/currently_playing.html', {'page_obj': page_object})
 
 
+def movie_details(request, pk):
+    movie = Movie.objects.get(pk=pk)
+    context = {
+        'movie': movie,
+    }
+    return render(request, 'cinema/movie_details.html', context)
+
+
 class HallList(APIView):
     permission_classes = [IsAuthenticated, ]
 

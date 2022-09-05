@@ -10,12 +10,8 @@
 </div>
 <div class="results-container">
     {% for movie in page_obj %}
-    <div class="movie-container">
-        <img src="{{ movie.poster.url }}"/>
-        <div class="movie-content">
-            <h1>{{ movie }}</h1>
-            <p style="text-align: justify; text-justify: inter-word">Description: {{ movie.description }}</p>
-            <p>Length: {{ movie.length }}</p>
+        <div class="movie-container">
+            <h1 style="color: #FFFFFF">{{ movie }}</h1>
             <div class="button-container">
                 {% if user.is_authenticated %}
                     <a href="{% url 'reservation' pk=movie.pk %}"><button type="button" class="light-button">Book now</button></a>
@@ -23,10 +19,10 @@
                     <a href="{% url 'login' %}"><button type="button" class="light-button">Log in to book</button></a>
                 {% endif %}
                 <button type="button" class="light-button" onclick="location.href='{{ movie.imdb_link }}'">See more on IMDb</button>
+                <a href="{% url 'movie_details' pk=movie.id %}"><button type="button" class="light-button">Details</button></a>
+
             </div>
         </div>
-        <iframe width="300" height="202" src="{{ movie.embed_trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
     {% endfor %}
 </div>
 <div class="pagination">

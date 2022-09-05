@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ movie }}</title>
+{% endblock title %}
+
+{% block body %}
+
+<div class="movie-details-wrapper">
+    <div class="movie-details">
+        <img src="{{ movie.poster.url }}" style="width: 200px; margin: 20px; border-radius:10px;"/>
+        <div class="movie-controls">
+        <div class="movie-content">
+            <h1>{{ movie }}</h1>
+            <p style="text-align: justify; text-justify: inter-word"><strong>Description:</strong> {{ movie.description }}</p>
+            <p><strong>Length:</strong> {{ movie.length }}</p>
+        </div>
+            <div class="button-container">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'reservation' pk=movie.pk %}"><button type="button" class="dark-button">Book now</button></a>
+                {% else %}
+                    <a href="{% url 'login' %}"><button type="button" class="dark-button">Log in to book</button></a>
+                {% endif %}
+                <button type="button" class="dark-button" onclick="location.href='{{ movie.imdb_link }}'">See more on IMDb</button>
+            </div>
+        </div>
+            <iframe width="300" height="202" src="{{ movie.embed_trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+</div>
+
+{% endblock body %}
